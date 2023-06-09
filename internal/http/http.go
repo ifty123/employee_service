@@ -1,6 +1,7 @@
 package http
 
 import (
+	"latihan_service/internal/app/auth"
 	"latihan_service/internal/app/employee"
 	"latihan_service/internal/factory"
 	"latihan_service/pkg/util"
@@ -20,4 +21,5 @@ func NewHttp(e *echo.Echo, f *factory.Factory) {
 	//group
 	v1 := e.Group("/api/v1")
 	employee.NewHandler(f).Route(v1.Group("/employees"))
+	auth.NewHandler(f).Route(v1.Group("/auth"))
 }

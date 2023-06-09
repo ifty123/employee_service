@@ -10,6 +10,7 @@ import (
 
 var tables = []interface{}{
 	&model.Employee{},
+	&model.Division{},
 }
 
 func Migrate() {

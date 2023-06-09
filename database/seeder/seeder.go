@@ -16,8 +16,10 @@ func NewSeeder() *seed {
 
 func (s *seed) SeedAll() {
 	EmployeeSeeder(s.DB)
+	divisionSeeder(s.DB)
 }
 
 func (s *seed) DeleteAll() {
 	s.DB.Exec("DELETE FROM employees")
+	s.DB.Exec("DELETE FROM divisions")
 }

@@ -12,6 +12,7 @@ func EmployeeSeeder(db *gorm.DB) {
 		{
 			Fullname: "Alif",
 			Email:    "alifipa5@gmail.com",
+			Role:     "Employee",
 			Password: "$2a$10$rfpS/jJ.a5J9seBM5sNPTeMQ0iVcAjoox3TDZqLE7omptkVQfaRwW", // 123abcABC!
 		},
 		{
