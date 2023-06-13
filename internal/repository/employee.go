@@ -16,6 +16,7 @@ type EmployeeRepository interface {
 	FindByEmail(ctx context.Context, email *string) (*model.Employee, error)
 	ExistByEmail(ctx context.Context, email string) (bool, error)
 	Save(ctx context.Context, employee *dto.RegisterEmployeeReq) (*model.Employee, error)
+	Edit(ctx context.Context, Id uint, updateData *model.Employee) error
 }
 
 type employee struct {
@@ -106,4 +107,14 @@ func (e *employee) Save(ctx context.Context, employee *dto.RegisterEmployeeReq) 
 	}
 
 	return &newEmployee, nil
+}
+
+func (e *employee) Edit(ctx context.Context, Id uint, updateData *model.Employee) error {
+
+	result := e.Db.WithContext(ctx).Model(&model.Employee{}).Where("id = ?", Id).Updates(&updateData)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
 }

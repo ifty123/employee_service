@@ -65,10 +65,9 @@ to use this flag:
 	//factory database
 	f := factory.NewFactory()
 	e := echo.New()
-	mid := middleware.NewMidleware()
 
-	e.Use(mid.CORS)
-	mid.LogMiddlewares(e)
+	e.Use(middleware.CORS)
+	middleware.LogMiddlewares(e)
 
 	http.NewHttp(e, f)
 

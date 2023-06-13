@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"latihan_service/internal/dto"
+	"log"
 	"strings"
 	"time"
 
@@ -16,13 +17,13 @@ var (
 	JWT_SIGNING_METHOD = jwt.SigningMethodHS256
 )
 
-func GetTokenString(authHeader string) (string, error) {
+func GetTokenString(authHeader string) (*string, error) {
 	var token string
 	if strings.Contains(authHeader, "Bearer") {
-		token = strings.Replace(authHeader, "Bearer", "", -1)
-		return token, nil
+		token = strings.Replace(authHeader, "Bearer ", "", -1)
+		return &token, nil
 	}
-	return "", fmt.Errorf("authorization not found")
+	return nil, fmt.Errorf("authorization not found")
 }
 
 func CreateJWTClaims(email string, userId, divisionId uint) dto.JWTClaims {
@@ -43,10 +44,11 @@ func CreateJWTToken(claims dto.JWTClaims) (string, error) {
 func ParseJWTToken(authHeader string) (*dto.JWTClaims, error) {
 	tokenString, err := GetTokenString(authHeader)
 	if err != nil {
+		log.Println("err get token :", err)
 		return nil, err
 	}
 
-	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
+	token, err := jwt.Parse(*tokenString, func(t *jwt.Token) (interface{}, error) {
 		if method, ok := t.Method.(*jwt.SigningMethodHMAC); !ok || method != JWT_SIGNING_METHOD {
 			return nil, fmt.Errorf("invalid signing method")
 		}
@@ -54,6 +56,7 @@ func ParseJWTToken(authHeader string) (*dto.JWTClaims, error) {
 	})
 
 	if err != nil {
+		log.Println("err parsing :", err)
 		return nil, err
 	}
 
